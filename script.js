@@ -692,8 +692,24 @@ document.addEventListener('DOMContentLoaded', () => {
         synth.playFanfare();
         const element = document.getElementById('prescription-print');
         
-        // Render receipt to canvas and download as PNG
-        html2canvas(element, {
+        // Create off-screen container with fixed desktop width
+        const tempContainer = document.createElement('div');
+        tempContainer.style.position = 'absolute';
+        tempContainer.style.top = '-9999px';
+        tempContainer.style.left = '-9999px';
+        tempContainer.style.width = '480px';
+        document.body.appendChild(tempContainer);
+        
+        // Clone the receipt
+        const clone = element.cloneNode(true);
+        clone.style.width = '480px';
+        clone.style.maxWidth = 'none';
+        clone.style.padding = '35px';
+        
+        tempContainer.appendChild(clone);
+        
+        // Render the fixed-width clone to canvas
+        html2canvas(clone, {
             backgroundColor: '#faf7f0',
             scale: 2,
             logging: false,
@@ -703,8 +719,12 @@ document.addEventListener('DOMContentLoaded', () => {
             link.download = 'Resep_Kebahagiaan_Adristy.png';
             link.href = canvas.toDataURL('image/png');
             link.click();
+            
+            // Clean up
+            document.body.removeChild(tempContainer);
         }).catch(err => {
             console.error('Failed to save PNG, falling back to print:', err);
+            document.body.removeChild(tempContainer);
             window.print();
         });
     });
