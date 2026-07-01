@@ -200,23 +200,31 @@ function initScrapbookBg() {
         { text: '★', class: 'star-sticker' },
         { text: '💖', class: 'heart-sticker' },
         { text: '💊', class: 'pill-sticker' },
-        { text: 'Adristy!', class: 'grad-sticker' },
-        { text: 'S.Farm!', class: 'grad-sticker' },
+        { text: 'Adristy! 🌸', class: 'grad-sticker' },
+        { text: 'S.Farm! ✨', class: 'grad-sticker' },
         { text: 'OSCE ❌', class: 'pill-sticker' },
-        { text: 'Revisi 📝', class: 'pill-sticker' },
-        { text: '100% Lulus', class: 'grad-sticker' },
+        { text: 'Revisi Dosen 📝', class: 'pill-sticker' },
+        { text: '100% Lulus 🎓', class: 'grad-sticker' },
         { text: 'Apoteker ✨', class: 'grad-sticker' },
-        { text: '🌸', class: 'heart-sticker' }
+        { text: 'Anggun 🌸', class: 'grad-sticker' },
+        { text: 'Bestie! 👦', class: 'heart-sticker' },
+        { text: 'Cie S.Farm! 🎉', class: 'grad-sticker' },
+        { text: 'Lulus! 🎓', class: 'grad-sticker' },
+        { text: 'Anti Overthinking 🧠', class: 'pill-sticker' },
+        { text: 'No More OSCE! ⏱️', class: 'pill-sticker' },
+        { text: 'Pharmacist 🧪', class: 'grad-sticker' },
+        { text: 'Mortar & Pestle 🥣', class: 'pill-sticker' },
+        { text: '💊 1000mg Bahagia', class: 'pill-sticker' },
+        { text: 'S.Tr.Kom 💻', class: 'grad-sticker' }
     ];
 
-    // Distribute stickers across background statically
-    const colCount = 6;
-    const rowCount = 4;
+    // Distribute stickers across background statically (dense 8x6 grid)
+    const colCount = 8;
+    const rowCount = 6;
     
     for (let r = 0; r < rowCount; r++) {
         for (let c = 0; c < colCount; c++) {
-            // Add some randomness so they look hand-placed
-            if (Math.random() > 0.45) {
+            if (Math.random() > 0.35) {
                 const spec = stickers[Math.floor(Math.random() * stickers.length)];
                 createSticker(bg, spec, r, c, rowCount, colCount);
             }
@@ -340,18 +348,18 @@ document.addEventListener('DOMContentLoaded', () => {
                          enteredName.includes('saraswati') || 
                          enteredName.includes('farm');
 
-        const profileCaption = document.querySelector('.handwritten-title');
+        const profileCaptions = document.querySelectorAll('.handwritten-title');
         const pharmacistName = document.querySelector('.pharmacist-name');
         
         if (isAnggun) {
             // Capitalized correct name spelling
             const fullName = "Adristy Nityasa Anggun Saraswati, S.Farm.";
-            profileCaption.textContent = fullName;
+            profileCaptions.forEach(el => el.textContent = fullName);
             if (pharmacistName) pharmacistName.textContent = fullName;
         } else {
             // Support others entering their own custom name as guest
             const formatted = nameInput.value.trim().split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
-            profileCaption.textContent = `${formatted} (Teman Adristy S.Farm)`;
+            profileCaptions.forEach(el => el.textContent = `${formatted} (Teman Adristy S.Farm)`);
             if (pharmacistName) pharmacistName.textContent = `${formatted} (Teman Adristy S.Farm)`;
         }
 
@@ -375,14 +383,18 @@ document.addEventListener('DOMContentLoaded', () => {
             if (progress >= 100) {
                 clearInterval(progInterval);
                 
-                // Transition to Dashboard Hub
+                // Transition to Polaroid pop-up overlay first!
                 setTimeout(() => {
-                    synth.playFanfare();
-                    showScreen('screen-hub');
-                    
-                    // Auto-start music if they haven't toggled it
-                    if (!synth.isPlayingMusic) {
-                        soundBtn.click();
+                    const profilePop = document.getElementById('profile-pop-overlay');
+                    if (profilePop) {
+                        profilePop.style.display = 'flex';
+                        initConfetti('profile-confetti-canvas');
+                        synth.playFanfare();
+                    } else {
+                        showScreen('screen-hub');
+                        if (!synth.isPlayingMusic) {
+                            soundBtn.click();
+                        }
                     }
                 }, 400);
             }
@@ -644,13 +656,14 @@ document.addEventListener('DOMContentLoaded', () => {
         synth.playFanfare();
         diplomaOverlay.classList.remove('hidden');
         diplomaOverlay.style.display = 'flex';
-        initConfetti();
+        initConfetti('confetti-canvas');
     }
 
     // Flat Confetti animation
     let canvas, canvasCtx, particles = [];
-    function initConfetti() {
-        canvas = document.getElementById('confetti-canvas');
+    function initConfetti(canvasId) {
+        canvas = document.getElementById(canvasId || 'confetti-canvas');
+        if (!canvas) return;
         canvasCtx = canvas.getContext('2d');
         resizeCanvas();
         window.addEventListener('resize', resizeCanvas);
@@ -796,4 +809,22 @@ document.addEventListener('DOMContentLoaded', () => {
         showScreen('screen-welcome');
         nameInput.focus();
     });
+
+    // Polaroid Welcome Modal Close Action
+    const closeProfilePopBtn = document.getElementById('btn-close-profile-pop');
+    const profilePopOverlay = document.getElementById('profile-pop-overlay');
+    if (closeProfilePopBtn && profilePopOverlay) {
+        closeProfilePopBtn.addEventListener('click', () => {
+            synth.playClick();
+            confettiActive = false; // Stop pop-up confetti
+            profilePopOverlay.style.display = 'none';
+            showScreen('screen-hub'); // Now reveal the dashboard!
+            
+            // Auto-start music if they haven't toggled it yet
+            if (!synth.isPlayingMusic) {
+                const soundBtn = document.getElementById('sound-btn');
+                if (soundBtn) soundBtn.click();
+            }
+        });
+    }
 });
