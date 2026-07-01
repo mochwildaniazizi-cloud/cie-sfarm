@@ -187,6 +187,21 @@ class RetroSynth {
             this.musicInterval = null;
         }
     }
+
+    playBuzzer() {
+        if (!this.ctx) return;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(100, this.ctx.currentTime);
+        gain.gain.setValueAtTime(0, this.ctx.currentTime);
+        gain.gain.linearRampToValueAtTime(0.06, this.ctx.currentTime + 0.01);
+        gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.25);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start();
+        osc.stop(this.ctx.currentTime + 0.25);
+    }
 }
 
 const synth = new RetroSynth();
@@ -269,6 +284,10 @@ function showScreen(screenId) {
    MAIN CODE SETUP
    ========================================================================== */
 document.addEventListener('DOMContentLoaded', () => {
+    // Game progression tracking sets
+    let clickedPolaroids = new Set();
+    let clickedPotions = new Set();
+
     // 1. Load Background Stickers
     initScrapbookBg();
 
@@ -401,12 +420,18 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 120);
     });
 
-    // 4. Tab Navigation System
+    // 4. Tab Navigation System (linear progression locked checks)
     const tabs = document.querySelectorAll('.nav-tape');
     const panes = document.querySelectorAll('.tab-pane');
 
     tabs.forEach(tab => {
         tab.addEventListener('click', () => {
+            // Block click if tab is locked
+            if (tab.classList.contains('locked')) {
+                synth.playBuzzer();
+                return;
+            }
+
             synth.playClick();
             const targetId = tab.getAttribute('data-target');
 
@@ -418,34 +443,11 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // ================= TAB 1: POLAROID OBSTACLES LOGIC =================
+    // 5. Polaroid Obstacles Dissolve Click
     const polaroids = document.querySelectorAll('.obstacle-polaroid');
     const affCard = document.getElementById('affirmation-display');
     const affTitle = document.getElementById('affirmation-title');
     const affText = document.getElementById('affirmation-text');
-
-    const obstacleMemos = {
-        laporan: {
-            title: "Laporan Praktikum: LULUS DILULUSKAN! 📝",
-            text: "Laporan tebal ratusan halaman ditulis tangan, gambar jaringan sel tanaman di mikroskop, hitung rumus pengenceran kimia ruwet... Terima kasih Adristy sudah mau bertahan nulis semua itu meskipun jari kram dan capek luar biasa! Hasil tulisan tanganmu itu sangat legendaris!"
-        },
-        osce: {
-            title: "Ujian OSCE: MOMOK YANG BERHASIL DITAKLUKKAN! ⏱️",
-            text: "Bel berbunyi kencang menandakan waktu stasiun berjalan, tangan gemetar pegang pipet dan racik puyer, ditatap dingin oleh dosen penguji... Tapi kamu tenang, fokus, dan membuktikan keahlian kefarmasianmu. OSCE terlewati dengan luar biasa!"
-        },
-        revisi: {
-            title: "Revisi Skripsi: TUNDUK SEPENUHNYA! 💻",
-            text: "Dosen coret lembar draf skripsi, ganti judul di tengah jalan, analisis data ditolak berulang kali... Semua revisi menyebalkan yang bikin sakit kepala itu akhirnya luluh di bawah ketabahan dan kecerdasanmu! Gelar S.Farm ini adalah saksi bisu kehebatanmu!"
-        },
-        kurangtidur: {
-            title: "Tidur Kurang dari 4 Jam: SEKARANG BAYAR LUNAS! 😴",
-            text: "Mata panda, kopi bergelas-gelas, belajar farmakologi sampai fajar menyingsing demi kuis praktikum... Sekarang bayar tuntas seluruh waktu tidurmu dengan tidur nyenyak yang paling bahagia sebagai seorang Sarjana Farmasi. Selamat istirahat panjang!"
-        },
-        badai: {
-            title: "Badai Rintangan: KAMU ADALAH PEMENANGNYA! ⛈️",
-            text: "Tetesan air mata lelah, rasa cemas apakah bisa selesai, dan rintangan kuliah lainnya... Semua badai itu tidak mampu merobohkan tekad bajamu. Kamu jauh lebih kuat dari badai apa pun, Anggun! Kami semua sangat bangga padamu."
-        }
-    };
 
     polaroids.forEach(pol => {
         pol.addEventListener('click', () => {
@@ -453,6 +455,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
             synth.playClick();
             pol.classList.add('scratched');
+
+            // Track clicked polaroids
+            const obs = pol.getAttribute('data-obstacle');
+            clickedPolaroids.add(obs);
+
+            // Check if all 5 are scratched to unlock Tab 2
+            if (clickedPolaroids.size === 5) {
+                const navPotions = document.getElementById('nav-potions');
+                if (navPotions && navPotions.classList.contains('locked')) {
+                    navPotions.classList.remove('locked');
+                    navPotions.removeAttribute('disabled');
+                    navPotions.querySelector('span').textContent = 'Ramuan Afirmasi 🧪';
+                    
+                    setTimeout(() => {
+                        synth.playFanfare();
+                        alert("Selamat! Semua rintangan kuliah farmasi telah diluluhkan. 'Ramuan Afirmasi' kini terbuka! 🧪");
+                    }, 1200);
+                }
+            }
 
             // Flat rectangular confetti spark effect
             const rect = pol.getBoundingClientRect();
@@ -476,6 +497,29 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
+
+    const obstacleMemos = {
+        laporan: {
+            title: "Laporan Praktikum: LULUS DILULUSKAN! 📝",
+            text: "Laporan tebal ratusan halaman ditulis tangan, gambar jaringan sel tanaman di mikroskop, hitung rumus pengenceran kimia ruwet... Terima kasih Adristy sudah mau bertahan nulis semua itu meskipun jari kram dan capek luar biasa! Hasil tulisan tanganmu itu sangat legendaris!"
+        },
+        osce: {
+            title: "Ujian OSCE: MOMOK YANG BERHASIL DITAKLUKKAN! ⏱️",
+            text: "Bel berbunyi kencang menandakan waktu stasiun berjalan, tangan gemetar pegang pipet dan racik puyer, ditatap dingin oleh dosen penguji... Tapi kamu tenang, fokus, dan membuktikan keahlian kefarmasianmu. OSCE terlewati dengan luar biasa!"
+        },
+        revisi: {
+            title: "Revisi Skripsi: TUNDUK SEPENUHNYA! 💻",
+            text: "Dosen coret lembar draf skripsi, ganti judul di tengah jalan, analisis data ditolak berulang kali... Semua revisi menyebalkan yang bikin sakit kepala itu akhirnya luluh di bawah ketabahan dan kecerdasanmu! Gelar S.Farm ini adalah saksi bisu kehebatanmu!"
+        },
+        kurangtidur: {
+            title: "Tidur Kurang dari 4 Jam: SEKARANG BAYAR LUNAS! 😴",
+            text: "Mata panda, kopi bergelas-gelas, belajar farmakologi sampai fajar menyingsing demi kuis praktikum... Sekarang bayar tuntas seluruh waktu tidurmu dengan tidur nyenyak yang paling bahagia sebagai seorang Sarjana Farmasi. Selamat istirahat panjang!"
+        },
+        badai: {
+            title: "Badai Rintangan: KAMU ADALAH PEMENANGNYA! ⛈️",
+            text: "Tetesan air mata lelah, rasa cemas apakah bisa selesai, dan rintangan kuliah lainnya... Semua badai itu tidak mampu merobohkan tekad bajamu. Kamu jauh lebih kuat dari badai apa pun, Anggun! Kami semua sangat bangga padamu."
+        }
+    };
 
     function createFlatSparks(x, y) {
         const colors = ['#ffb5c5', '#a0c4ff', '#ffebb3', '#c7f9cc', '#72efdd'];
@@ -548,6 +592,24 @@ document.addEventListener('DOMContentLoaded', () => {
                 modalContent.textContent = data.text;
                 modal.classList.remove('hidden');
                 
+                // Track clicked sticky notes
+                clickedPotions.add(pot);
+
+                // Check if all 4 are read to unlock Tab 3
+                if (clickedPotions.size === 4) {
+                    const navGrinder = document.getElementById('nav-grinder');
+                    if (navGrinder && navGrinder.classList.contains('locked')) {
+                        navGrinder.classList.remove('locked');
+                        navGrinder.removeAttribute('disabled');
+                        navGrinder.querySelector('span').textContent = 'Hancurkan Stress 🥣';
+                        
+                        setTimeout(() => {
+                            synth.playFanfare();
+                            alert("Semua ramuan doa telah dibaca. 'Stress Grinder' kini terbuka! 🥣");
+                        }, 1200);
+                    }
+                }
+
                 // Scroll main window to top so modal is fully in view
                 window.scrollTo({ top: 0, behavior: 'smooth' });
                 modal.scrollTop = 0;
@@ -728,9 +790,26 @@ document.addEventListener('DOMContentLoaded', () => {
         diplomaOverlay.classList.add('hidden');
         diplomaOverlay.style.display = 'none';
 
-        // Go to Prescription Tab
-        const rxTab = document.querySelector('.nav-tape[data-target="tab-prescription"]');
-        if (rxTab) rxTab.click();
+        // Unlock Tab 4 (Prescription)
+        const navPresc = document.getElementById('nav-prescription');
+        if (navPresc && navPresc.classList.contains('locked')) {
+            navPresc.classList.remove('locked');
+            navPresc.removeAttribute('disabled');
+            navPresc.querySelector('span').textContent = 'Resep Kebahagiaan 📜';
+            
+            setTimeout(() => {
+                synth.playFanfare();
+                alert("Resep Kebahagiaan spesial dari Wildani kini siap untuk kamu ambil! 📜");
+                
+                // Go to Prescription Tab
+                const rxTab = document.getElementById('nav-prescription');
+                if (rxTab) rxTab.click();
+            }, 500);
+        } else {
+            // Already unlocked
+            const rxTab = document.getElementById('nav-prescription');
+            if (rxTab) rxTab.click();
+        }
     });
 
     // ================= TAB 4: PRINT & RESTART LOGIC =================
@@ -780,6 +859,38 @@ document.addEventListener('DOMContentLoaded', () => {
 
     restartBtn.addEventListener('click', () => {
         synth.playClick();
+
+        // Reset game progression locks
+        clickedPolaroids.clear();
+        clickedPotions.clear();
+
+        const navPotions = document.getElementById('nav-potions');
+        if (navPotions) {
+            navPotions.classList.add('locked');
+            navPotions.setAttribute('disabled', 'true');
+            navPotions.querySelector('span').textContent = 'Ramuan Afirmasi 🔒';
+        }
+        const navGrinder = document.getElementById('nav-grinder');
+        if (navGrinder) {
+            navGrinder.classList.add('locked');
+            navGrinder.setAttribute('disabled', 'true');
+            navGrinder.querySelector('span').textContent = 'Hancurkan Stress 🔒';
+        }
+        const navPresc = document.getElementById('nav-prescription');
+        if (navPresc) {
+            navPresc.classList.add('locked');
+            navPresc.setAttribute('disabled', 'true');
+            navPresc.querySelector('span').textContent = 'Resep Kebahagiaan 🔒';
+        }
+
+        // Reset tab focus to first tab
+        tabs.forEach(t => t.classList.remove('active'));
+        const navCaps = document.getElementById('nav-capsules');
+        if (navCaps) navCaps.classList.add('active');
+
+        panes.forEach(p => p.classList.remove('active'));
+        const tabCaps = document.getElementById('tab-capsules');
+        if (tabCaps) tabCaps.classList.add('active');
 
         // Reset Onboarding state
         nameInput.value = "";

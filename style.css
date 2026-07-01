@@ -573,6 +573,30 @@ body {
     }
     .scrapbook-sidebar-left {
         position: static;
+        align-items: flex-start;
+        width: 100%;
+    }
+    .polaroid-profile {
+        align-self: flex-start;
+        margin-left: 10px;
+    }
+    .info-tag-note {
+        align-self: flex-start;
+        margin-left: 10px;
+    }
+    /* Mobile responsive overrides to stack columns and wrap items */
+    .polaroid-obstacles-container, .sticky-notes-board {
+        flex-wrap: wrap !important;
+        justify-content: center;
+    }
+    .obstacle-polaroid {
+        width: 130px;
+        padding: 8px 8px 14px;
+    }
+    .sticky-note {
+        flex: none !important;
+        width: 130px;
+        min-height: 130px;
     }
 }
 
@@ -733,6 +757,20 @@ body {
     font-weight: 700;
 }
 
+.nav-tape.locked {
+    background: #e9ecef !important;
+    color: #868e96 !important;
+    cursor: not-allowed !important;
+    box-shadow: none !important;
+    transform: none !important;
+    opacity: 0.75;
+}
+
+.nav-tape.locked span {
+    text-decoration: line-through;
+    opacity: 0.6;
+}
+
 /* Tape Color Variations */
 .tape-yellow { background: var(--neon-yellow); }
 .tape-blue { background: var(--neon-blue); }
@@ -791,9 +829,10 @@ body {
 .polaroid-obstacles-container {
     display: flex;
     justify-content: center;
-    flex-wrap: wrap;
-    gap: 25px;
+    flex-wrap: nowrap;
+    gap: 15px;
     margin-bottom: 35px;
+    width: 100%;
 }
 
 .obstacle-polaroid {
@@ -948,10 +987,12 @@ body {
    TAB 2: STICKY NOTES PINBOARD
    ========================================================================== */
 .sticky-notes-board {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 25px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: nowrap;
+    gap: 15px;
     margin-bottom: 30px;
+    width: 100%;
 }
 
 .sticky-note {
@@ -967,6 +1008,8 @@ body {
     flex-direction: column;
     justify-content: center;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
+    flex: 1;
+    max-width: 180px;
 }
 
 /* Rotation and colors of sticky notes */
