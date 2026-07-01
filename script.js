@@ -359,28 +359,32 @@ document.addEventListener('DOMContentLoaded', () => {
         synth.init();
         synth.playClick();
 
-        // Support both spellings: 'adristy' or 'adristi' or nickname 'anggun'
-        const isAnggun = enteredName.includes('anggun') || 
-                         enteredName.includes('adristy') || 
-                         enteredName.includes('adristi') || 
-                         enteredName.includes('nityasa') || 
-                         enteredName.includes('saraswati') || 
-                         enteredName.includes('farm');
+        // Strictly verify name: must contain 'anggun', 'andun', 'adristy', 'adristi', 'nityasa', 'saraswati', or 's.farm'
+        const isValidName = enteredName.includes('anggun') || 
+                            enteredName.includes('andun') || 
+                            enteredName.includes('adristy') || 
+                            enteredName.includes('adristi') || 
+                            enteredName.includes('nityasa') || 
+                            enteredName.includes('saraswati') || 
+                            enteredName.includes('s.farm') ||
+                            enteredName.includes('farm');
+
+        if (!isValidName) {
+            loginError.textContent = "Nama tidak terdaftar sebagai Apoteker S.Farm kita! Coba masukkan 'Anggun', 'Andun', atau nama lengkapnya 💖";
+            loginError.style.display = "block";
+            return;
+        }
+
+        // Hide error message if validation succeeds
+        loginError.style.display = "none";
 
         const profileCaptions = document.querySelectorAll('.handwritten-title');
         const pharmacistName = document.querySelector('.pharmacist-name');
         
-        if (isAnggun) {
-            // Capitalized correct name spelling
-            const fullName = "Adristy Nityasa Anggun Saraswati, S.Farm.";
-            profileCaptions.forEach(el => el.textContent = fullName);
-            if (pharmacistName) pharmacistName.textContent = fullName;
-        } else {
-            // Support others entering their own custom name as guest
-            const formatted = nameInput.value.trim().split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
-            profileCaptions.forEach(el => el.textContent = `${formatted} (Teman Adristy S.Farm)`);
-            if (pharmacistName) pharmacistName.textContent = `${formatted} (Teman Adristy S.Farm)`;
-        }
+        // Capitalized correct name spelling
+        const fullName = "Adristy Nityasa Anggun Saraswati, S.Farm.";
+        profileCaptions.forEach(el => el.textContent = fullName);
+        if (pharmacistName) pharmacistName.textContent = fullName;
 
         // Show Diskette Loading Screen
         showScreen('screen-loading');
