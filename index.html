@@ -92,30 +92,35 @@
         <section id="screen-hub" class="screen">
             <div class="scrapbook-board">
                 
-                <!-- Polaroid Profile Photo (Pinned on the board) -->
-                <div class="scrapbook-item polaroid-profile">
-                    <div class="tape-tape top-center-tape"></div>
-                    <div class="polaroid-photo-frame">
-                        <div class="photo-container">
-                            <img id="avatar-img" class="profile-photo" src="photo.jpg" alt="Adristy Nityasa Anggun Saraswati, S.Farm.">
+                <!-- LEFT COLUMN: Profile & Pinned Notes -->
+                <div class="scrapbook-sidebar-left">
+                    <!-- Polaroid Profile Photo (Pinned on the board) -->
+                    <div class="scrapbook-item polaroid-profile">
+                        <div class="tape-tape top-center-tape"></div>
+                        <div class="polaroid-photo-frame">
+                            <div class="photo-container">
+                                <img id="avatar-img" class="profile-photo" src="photo.jpg" alt="Adristy Nityasa Anggun Saraswati, S.Farm.">
+                            </div>
+                            <div class="polaroid-caption">
+                                <span class="handwritten-title">Adristy Anggun, S.Farm.</span>
+                                <span class="caption-date">Milestone Gelar Baru S.Farm 💊</span>
+                            </div>
                         </div>
-                        <div class="polaroid-caption">
-                            <span class="handwritten-title">Adristy Anggun, S.Farm.</span>
-                            <span class="caption-date">Milestone Gelar Baru S.Farm 💊</span>
-                        </div>
+                        <div class="star-sticker decoration-star">★</div>
                     </div>
-                    <div class="star-sticker decoration-star">★</div>
+
+                    <!-- Scrapbook Info Tag -->
+                    <div class="scrapbook-item info-tag-note">
+                        <div class="pushpin">📌</div>
+                        <p class="tag-bold">APOTEKER TERHEBAT!</p>
+                        <p class="tag-desc">Telah menempuh badai rintangan farmasi demi gelar S.Farm yang membanggakan!</p>
+                    </div>
                 </div>
 
-                <!-- Scrapbook Info Tag -->
-                <div class="scrapbook-item info-tag-note">
-                    <div class="pushpin">📌</div>
-                    <p class="tag-bold">APOTEKER TERHEBAT!</p>
-                    <p class="tag-desc">Telah menempuh badai rintangan farmasi demi gelar S.Farm yang membanggakan!</p>
-                </div>
-
-                <!-- Interactive Navigation (Highlighter/Label Tapes) -->
-                <div class="scrapbook-navigation">
+                <!-- RIGHT COLUMN: Tabs & Workspace -->
+                <div class="scrapbook-main-right">
+                    <!-- Interactive Navigation (Highlighter/Label Tapes) -->
+                    <div class="scrapbook-navigation">
                     <button class="nav-tape tape-yellow active" data-target="tab-capsules">
                         <span>Luluhkan Rintangan</span>
                     </button>
@@ -385,7 +390,7 @@
                             </div>
                         </div>
                     </div>
-
+                    </div>
                 </div>
             </div>
         </section>

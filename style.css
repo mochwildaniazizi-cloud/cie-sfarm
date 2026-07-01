@@ -175,7 +175,7 @@ body {
    ========================================================================== */
 .app-container {
     width: 100%;
-    max-width: 900px;
+    max-width: 1150px;
     z-index: 10;
     display: flex;
     justify-content: center;
@@ -525,10 +525,38 @@ body {
    ========================================================================== */
 .scrapbook-board {
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns: 280px 1fr;
     gap: 30px;
     position: relative;
     z-index: 5;
+    align-items: start;
+    width: 100%;
+}
+
+.scrapbook-sidebar-left {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    align-items: center;
+    position: sticky;
+    top: 20px;
+}
+
+.scrapbook-main-right {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    min-width: 0;
+}
+
+@media (max-width: 850px) {
+    .scrapbook-board {
+        grid-template-columns: 1fr;
+        gap: 25px;
+    }
+    .scrapbook-sidebar-left {
+        position: static;
+    }
 }
 
 /* Pinned Polaroid Profile Photo */
