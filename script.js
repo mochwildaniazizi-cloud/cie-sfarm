@@ -609,6 +609,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function triggerGraduationClimax() {
         synth.playFanfare();
         diplomaOverlay.classList.remove('hidden');
+        diplomaOverlay.style.display = 'flex';
         initConfetti();
     }
 
@@ -678,6 +679,7 @@ document.addEventListener('DOMContentLoaded', () => {
         synth.playClick();
         confettiActive = false;
         diplomaOverlay.classList.add('hidden');
+        diplomaOverlay.style.display = 'none';
 
         // Go to Prescription Tab
         const rxTab = document.querySelector('.nav-tape[data-target="tab-prescription"]');
