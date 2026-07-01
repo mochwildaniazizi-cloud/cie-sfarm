@@ -238,7 +238,8 @@ function createSticker(container, spec, r, c, totalR, totalC) {
 
     el.style.left = `${xBase + 5 + jitterX}%`;
     el.style.top = `${yBase + 5 + jitterY}%`;
-    el.style.transform = `rotate(${rotate}deg)`;
+    el.style.setProperty('--rot', `${rotate}deg`);
+    el.style.animationDelay = `${Math.random() * -4}s`;
 
     container.appendChild(el);
 }
@@ -262,6 +263,33 @@ function showScreen(screenId) {
 document.addEventListener('DOMContentLoaded', () => {
     // 1. Load Background Stickers
     initScrapbookBg();
+
+    // Auto-pause BGM when page is hidden (minimized, switch tabs, etc.) and auto-resume on return
+    document.addEventListener('visibilitychange', () => {
+        const soundBtn = document.getElementById('sound-btn');
+        if (document.hidden) {
+            if (synth.isPlayingMusic) {
+                synth.stopMusic();
+                synth.wasPlayingBeforeHidden = true;
+                if (soundBtn) {
+                    soundBtn.classList.remove('playing');
+                    soundBtn.querySelector('.text').textContent = 'BGM Off';
+                    soundBtn.querySelector('.icon').textContent = '🔇';
+                }
+            }
+        } else {
+            if (synth.wasPlayingBeforeHidden) {
+                synth.wasPlayingBeforeHidden = false;
+                synth.toggleMusic((playing) => {
+                    if (playing && soundBtn) {
+                        soundBtn.classList.add('playing');
+                        soundBtn.querySelector('.text').textContent = 'BGM On';
+                        soundBtn.querySelector('.icon').textContent = '🔊';
+                    }
+                });
+            }
+        }
+    });
 
     // 2. Sound Controller Button Action
     const soundBtn = document.getElementById('sound-btn');
@@ -507,6 +535,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 modalTitle.textContent = data.title;
                 modalContent.textContent = data.text;
                 modal.classList.remove('hidden');
+                
+                // Scroll main window to top so modal is fully in view
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                modal.scrollTop = 0;
+                const notepadBody = document.querySelector('.notepad-body');
+                if (notepadBody) notepadBody.scrollTop = 0;
             }
         });
     });

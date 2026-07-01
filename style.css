@@ -37,6 +37,7 @@ body {
         linear-gradient(rgba(29, 29, 29, 0.05) 1px, transparent 1px),
         linear-gradient(90deg, rgba(29, 29, 29, 0.05) 1px, transparent 1px);
     background-size: 25px 25px;
+    background-attachment: fixed;
     min-height: 100vh;
     display: flex;
     justify-content: center;
@@ -85,10 +86,26 @@ body {
     border: 2px solid var(--border-dark);
     padding: 5px 12px;
     border-radius: 5px;
-    transform: rotate(5deg);
     opacity: 0.85;
     box-shadow: 2px 2px 0 var(--border-dark);
-    pointer-events: none;
+    pointer-events: auto;
+    cursor: pointer;
+    transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.25s ease, opacity 0.2s ease;
+    animation: floatSticker 4s ease-in-out infinite;
+}
+
+.sticker:hover {
+    animation: none;
+    transform: rotate(calc(var(--rot, 5deg) + 8deg)) scale(1.25) !important;
+    box-shadow: 5px 5px 0 var(--border-dark);
+    opacity: 1;
+    z-index: 200;
+}
+
+@keyframes floatSticker {
+    0% { transform: rotate(var(--rot, 5deg)) translateY(0); }
+    50% { transform: rotate(var(--rot, 5deg)) translateY(-6px); }
+    100% { transform: rotate(var(--rot, 5deg)) translateY(0); }
 }
 
 .sticker.star-sticker {
@@ -537,7 +554,7 @@ body {
     display: flex;
     flex-direction: column;
     gap: 25px;
-    align-items: center;
+    align-items: flex-start;
     position: sticky;
     top: 20px;
 }
@@ -561,9 +578,10 @@ body {
 
 /* Pinned Polaroid Profile Photo */
 .polaroid-profile {
-    justify-self: center;
-    transform: rotate(-1.5deg);
+    align-self: flex-start;
+    transform: rotate(-3deg);
     margin-bottom: 10px;
+    margin-left: 10px;
 }
 
 .polaroid-photo-frame {
@@ -652,9 +670,10 @@ body {
     padding: 15px 20px;
     border-radius: 4px;
     max-width: 320px;
-    justify-self: center;
+    align-self: flex-start;
     transform: rotate(2deg);
     position: relative;
+    margin-left: 10px;
 }
 
 .info-tag-note .pushpin {
