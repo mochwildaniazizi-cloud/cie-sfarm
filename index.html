@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Congrats on S.Farm, Adristy Anggun! ✨</title>
+    <!-- Google Fonts: Fredoka for bold headers, Space Mono for typewriter text, Plus Jakarta Sans for body -->
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Floating background scrapbook stickers -->
+    <div class="scrapbook-stickers-container" id="floating-bg"></div>
+
+    <!-- Sound Control Sticky Note -->
+    <div class="sound-control-note">
+        <div class="tape-tape"></div>
+        <button id="sound-btn" class="sound-btn" aria-label="Toggle Sound">
+            <span class="icon">🔇</span>
+            <span class="text">BGM Off</span>
+        </button>
+    </div>
+
+    <!-- Main Container -->
+    <main class="app-container">
+        
+        <!-- ================= SCREEN 1: RETRO COMPUTER VERIFICATION ================= -->
+        <section id="screen-welcome" class="screen active">
+            <div class="retro-window welcome-window">
+                <!-- Window Title Bar -->
+                <div class="window-titlebar">
+                    <span class="window-title">Apoteker_Verify.exe</span>
+                    <div class="window-controls">
+                        <span class="ctrl-btn minimize"></span>
+                        <span class="ctrl-btn maximize"></span>
+                        <span class="ctrl-btn close-x">&times;</span>
+                    </div>
+                </div>
+                
+                <!-- Window Body -->
+                <div class="window-body">
+                    <div class="terminal-header">
+                        <div class="star-badge star-left">★</div>
+                        <h1 class="scrapbook-title">Apotek Kebahagiaan</h1>
+                        <div class="star-badge star-right">★</div>
+                    </div>
+                    
+                    <p class="terminal-subtitle">Sistem Verifikasi Kelulusan Sarjana Farmasi (S.Farm)</p>
+                    
+                    <div class="monitor-screen">
+                        <div class="screen-glow"></div>
+                        <div class="terminal-text">
+                            <span class="prompt">></span> SIAPA NAMA APOTEKER TERHEBAT KITA HARI INI?
+                        </div>
+                        <input type="text" id="username-input" class="retro-input" placeholder="Ketik nama panggilan / nama lengkap..." autocomplete="off">
+                        <p class="error-msg" id="login-error">Nama tidak terdaftar! Coba ketik 'Anggun' atau 'Adristy' 💖</p>
+                    </div>
+
+                    <button id="btn-start" class="retro-btn btn-primary-retro">
+                        <span>VERIFIKASI & MASUK</span>
+                        <span class="btn-icon">⚡</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= SCREEN 2: DISPENSING / LOADING ================= -->
+        <section id="screen-loading" class="screen">
+            <div class="retro-window loading-window">
+                <div class="window-titlebar">
+                    <span class="window-title">Dispensing_Happiness.sys</span>
+                </div>
+                <div class="window-body loading-body">
+                    <div class="floppy-disk">
+                        <div class="disk-metal"></div>
+                        <div class="disk-label">
+                            <span class="label-brand">S.Farm v1.0</span>
+                            <span class="label-title">ADRISTY ANGGUN</span>
+                        </div>
+                        <div class="disk-write-protect"></div>
+                    </div>
+                    <h2 class="loading-heading">MEMBACA DOSIS CINTA...</h2>
+                    <div class="progress-bar-retro">
+                        <div class="progress-bar-fill" id="loading-bar-fill"></div>
+                    </div>
+                    <p class="loading-subtext">Melarutkan 1000mg semangat kebahagiaan...</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= SCREEN 3: MAIN HUB / DASHBOARD ================= -->
+        <section id="screen-hub" class="screen">
+            <div class="scrapbook-board">
+                
+                <!-- Polaroid Profile Photo (Pinned on the board) -->
+                <div class="scrapbook-item polaroid-profile">
+                    <div class="tape-tape top-center-tape"></div>
+                    <div class="polaroid-photo-frame">
+                        <div class="photo-container">
+                            <img id="avatar-img" class="profile-photo" src="C:/Users/mochw/.gemini/antigravity-ide/brain/9557160f-e301-488b-94b0-fa940a920a0e/media__1782887221536.jpg" alt="Adristy Nityasa Anggun Saraswati, S.Farm.">
+                        </div>
+                        <div class="polaroid-caption">
+                            <span class="handwritten-title">Adristy Anggun, S.Farm.</span>
+                            <span class="caption-date">Milestone Gelar Baru S.Farm 💊</span>
+                        </div>
+                    </div>
+                    <div class="star-sticker decoration-star">★</div>
+                </div>
+
+                <!-- Scrapbook Info Tag -->
+                <div class="scrapbook-item info-tag-note">
+                    <div class="pushpin">📌</div>
+                    <p class="tag-bold">APOTEKER TERHEBAT!</p>
+                    <p class="tag-desc">Telah menempuh badai rintangan farmasi demi gelar S.Farm yang membanggakan!</p>
+                </div>
+
+                <!-- Interactive Navigation (Highlighter/Label Tapes) -->
+                <div class="scrapbook-navigation">
+                    <button class="nav-tape tape-yellow active" data-target="tab-capsules">
+                        <span>Luluhkan Rintangan</span>
+                    </button>
+                    <button class="nav-tape tape-blue" data-target="tab-potions">
+                        <span>Ramuan Afirmasi</span>
+                    </button>
+                    <button class="nav-tape tape-pink" data-target="tab-grinder">
+                        <span>Hancurkan Stress</span>
+                    </button>
+                    <button class="nav-tape tape-green" data-target="tab-prescription">
+                        <span>Resep Kebahagiaan</span>
+                    </button>
+                </div>
+
+                <!-- Hub Content Container -->
+                <div class="scrapbook-content-window">
+                    
+                    <!-- TAB 1: POLAROID OBSTACLES -->
+                    <div id="tab-capsules" class="tab-pane active">
+                        <div class="pane-header">
+                            <h3>Bongkar & Larutkan Badai Rintangan! 🌪️</h3>
+                            <p class="typewriter-text">Sorot dan klik polaroid di bawah untuk melarutkan rintangan kuliah farmasi Anggun.</p>
+                        </div>
+
+                        <div class="polaroid-obstacles-container">
+                            <!-- Polaroid 1 -->
+                            <div class="obstacle-polaroid" data-obstacle="laporan" data-color="yellow">
+                                <div class="polaroid-tape"></div>
+                                <div class="obstacle-photo">📝</div>
+                                <div class="obstacle-label">Laporan Praktikum</div>
+                            </div>
+                            
+                            <!-- Polaroid 2 -->
+                            <div class="obstacle-polaroid" data-obstacle="osce" data-color="pink">
+                                <div class="paperclip">📎</div>
+                                <div class="obstacle-photo">⏱️</div>
+                                <div class="obstacle-label">Ujian OSCE</div>
+                            </div>
+                            
+                            <!-- Polaroid 3 -->
+                            <div class="obstacle-polaroid" data-obstacle="revisi" data-color="blue">
+                                <div class="polaroid-tape"></div>
+                                <div class="obstacle-photo">💻</div>
+                                <div class="obstacle-label">Revisi Skripsi</div>
+                            </div>
+                            
+                            <!-- Polaroid 4 -->
+                            <div class="obstacle-polaroid" data-obstacle="kurangtidur" data-color="green">
+                                <div class="pushpin-small">📌</div>
+                                <div class="obstacle-photo">😴</div>
+                                <div class="obstacle-label">Tidur &lt; 4 Jam</div>
+                            </div>
+                            
+                            <!-- Polaroid 5 -->
+                            <div class="obstacle-polaroid" data-obstacle="badai" data-color="yellow">
+                                <div class="polaroid-tape"></div>
+                                <div class="obstacle-photo">⛈️</div>
+                                <div class="obstacle-label">Badai Rintangan</div>
+                            </div>
+                        </div>
+
+                        <!-- Affirmation Reveal Area -->
+                        <div class="affirmation-scrapbook-wrapper">
+                            <div id="affirmation-display" class="affirmation-scrapbook-card hidden">
+                                <div class="card-pin">📌</div>
+                                <h4 id="affirmation-title">Struggle Dissolved!</h4>
+                                <p id="affirmation-text" class="typewriter-text">Pilih salah satu polaroid rintangan di atas untuk membukanya.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TAB 2: STICKY NOTES PINBOARD -->
+                    <div id="tab-potions" class="tab-pane">
+                        <div class="pane-header">
+                            <h3>Lemari Ramuan Afirmasi Spesial 🧪</h3>
+                            <p class="typewriter-text">Klik notes berwarna di bawah untuk membaca pesan kasih sayang khusus buat Anggun.</p>
+                        </div>
+
+                        <div class="sticky-notes-board">
+                            <!-- Note 1 -->
+                            <div class="sticky-note note-pink" data-potion="sukses">
+                                <div class="note-pin">📌</div>
+                                <div class="note-title">Ramuan Sukses</div>
+                                <div class="note-desc">Sentuh untuk meminum khasiatnya... ✨</div>
+                            </div>
+                            
+                            <!-- Note 2 -->
+                            <div class="sticky-note note-yellow" data-potion="bahagia">
+                                <div class="note-pin">📌</div>
+                                <div class="note-title">Elixir Bahagia</div>
+                                <div class="note-desc">Kadar dosis kebahagiaan 100%... 💖</div>
+                            </div>
+                            
+                            <!-- Note 3 -->
+                            <div class="sticky-note note-blue" data-potion="percaya">
+                                <div class="note-pin">📌</div>
+                                <div class="note-title">Tablet Semangat</div>
+                                <div class="note-desc">Asupan optimisme instan... ⭐</div>
+                            </div>
+                            
+                            <!-- Note 4 -->
+                            <div class="sticky-note note-green" data-potion="cinta">
+                                <div class="note-pin">📌</div>
+                                <div class="note-title">Sirup Cinta</div>
+                                <div class="note-desc">Pelukan hangat untuk Anggun... 🧸</div>
+                            </div>
+                        </div>
+
+                        <!-- Notepad Modal for Reading Letters -->
+                        <div id="potion-modal" class="notepad-modal-overlay hidden">
+                            <div class="notepad-modal-card">
+                                <div class="notepad-header">
+                                    <div class="notepad-ring"></div>
+                                    <div class="notepad-ring"></div>
+                                    <div class="notepad-ring"></div>
+                                    <div class="notepad-ring"></div>
+                                    <button class="notepad-close" id="modal-close-btn">&times;</button>
+                                </div>
+                                <div class="notepad-body">
+                                    <h3 id="modal-title" class="notepad-title">Nama Ramuan</h3>
+                                    <div class="notepad-lines">
+                                        <div id="modal-content" class="notepad-content">
+                                            Isi surat afirmasi...
+                                        </div>
+                                    </div>
+                                    <p class="notepad-dosage">📖 Dosis: Konsumsi saat lelah atau sedih. Habiskan tanpa sisa!</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TAB 3: MORTAR STRESS GRINDER -->
+                    <div id="tab-grinder" class="tab-pane">
+                        <div class="pane-header">
+                            <h3>Stress Grinder 95: Hancurkan Pusingmu! 🥣</h3>
+                            <p class="typewriter-text">Tarik/klik disket racun stress di kiri untuk dimasukkan ke mortar, lalu tekan TUMBUK!</p>
+                        </div>
+
+                        <div class="grinder-window-container">
+                            <!-- Left: Stress items represented as floppy disks -->
+                            <div class="stress-items-sidebar">
+                                <h4>Disket Racun Stress:</h4>
+                                <div class="stress-disk" data-stress="Overthinking" data-flavor="Lagi cemas mikirin masa depan? Sini kita tumbuk!">
+                                    <span class="disk-icon">💾</span> Overthinking
+                                </div>
+                                <div class="stress-disk" data-stress="Revisi Skripsi" data-flavor="Coretan merah dosen pembimbing? Hancurkan!">
+                                    <span class="disk-icon">💾</span> Revisi Dosen
+                                </div>
+                                <div class="stress-disk" data-stress="Insecurity" data-flavor="Minder lihat pencapaian orang lain? Buang!">
+                                    <span class="disk-icon">💾</span> Insecurity
+                                </div>
+                                <div class="stress-disk" data-stress="Ujian OSCE" data-flavor="Detik waktu OSCE yang bikin gemetar? Tumbuk!">
+                                    <span class="disk-icon">💾</span> Momok OSCE
+                                </div>
+                                <div class="stress-disk" data-stress="Kurang Tidur" data-flavor="Begadang nulis laporan praktikum? Hancurkan!">
+                                    <span class="disk-icon">💾</span> Capek Fisik
+                                </div>
+                            </div>
+
+                            <!-- Right: Grinder Arena -->
+                            <div class="mortar-grinder-workspace">
+                                <div class="grinder-app-window">
+                                    <div class="grinder-titlebar">
+                                        <span>Stress_Grinder.exe</span>
+                                    </div>
+                                    <div class="grinder-workspace-body">
+                                        <p id="grinder-status" class="terminal-status">SIAP MENERIMA INPUT RACUN...</p>
+                                        
+                                        <div class="mortar-svg-wrapper">
+                                            <div class="retro-mortar">
+                                                <div class="retro-mortar-bowl">
+                                                    <div class="mortar-grind-dust" id="mortar-dust"></div>
+                                                </div>
+                                                <div class="retro-pestle" id="pestle-stick"></div>
+                                            </div>
+                                        </div>
+
+                                        <button id="btn-grind" class="retro-btn btn-secondary-retro disabled" disabled>
+                                            <span>TUMBUK HALUS 💥</span>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Progress Bar -->
+                                <div class="retro-progress-section">
+                                    <div class="progress-labels">
+                                        <span>STATUS PENGHANCURAN:</span>
+                                        <span id="progress-percent">0%</span>
+                                    </div>
+                                    <div class="retro-bar-container">
+                                        <div class="retro-bar-fill" id="grind-progress-fill"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Victory Certificate Modal -->
+                        <div id="diploma-overlay" class="diploma-overlay-retro hidden">
+                            <canvas id="confetti-canvas"></canvas>
+                            <div class="certificate-paper">
+                                <div class="cert-border">
+                                    <div class="cert-seal">🎓</div>
+                                    <h2 class="cert-title">SURAT PENGHARGAAN APOTEKER TERHEBAT</h2>
+                                    <p class="cert-subtitle">Menimbang kehebatan, ketangguhan, dan kecerdasan:</p>
+                                    <h1 class="cert-recipient">Adristy Nityasa Anggun Saraswati, S.Farm.</h1>
+                                    <div class="cert-body">
+                                        <p>Telah resmi <strong>menghancurkan & melumatkan</strong> seluruh stress kuliah farmasi, revisi tiada henti, dan kurang tidur menjadi debu tak bernilai.</p>
+                                        <p class="cert-highlight">Dinyatakan SAH dan LAYAK menyandang gelar S.Farm serta siap melangkah ke masa depan dengan senyuman terbaik! ✨</p>
+                                    </div>
+                                    
+                                    <div class="cert-signatures">
+                                        <div class="cert-sign">
+                                            <span class="title">Bestiemu Terhebat</span>
+                                            <span class="name">👦 M. Wildani Azizi, calon S.Tr.Kom</span>
+                                        </div>
+                                        <div class="cert-sign">
+                                            <span class="title">Apotek Sahabat</span>
+                                            <span class="name">✨ Semesta Afirmasi</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="cert-stamp">LULUS 100%</div>
+                                    
+                                    <button id="btn-close-diploma" class="retro-btn btn-primary-retro">AMBIL RESEP KEBAHAGIAAN 📜</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TAB 4: PRESCRIPTION RECEIPT -->
+                    <div id="tab-prescription" class="tab-pane">
+                        <div class="pane-header">
+                            <h3>Resep Kebahagiaan Spesial (R/) 📜</h3>
+                            <p class="typewriter-text">Resep resmi apoteker yang wajib kamu cetak dan tebus setiap hari untuk kebahagiaan tanpa batas.</p>
+                        </div>
+
+                        <div class="receipt-layout-container">
+                            <div class="vintage-receipt" id="prescription-print">
+                                <div class="receipt-header">
+                                    <h2>KLINIK APOTEKER ANGGUN BAHAGIA</h2>
+                                    <p>Jl. Kasih Sayang Selamanya No. 1, Semesta</p>
+                                    <p class="receipt-contact">Telp: 0812-CINTA-KAMU</p>
+                                    <div class="receipt-dashed-line"></div>
+                                </div>
+
+                                <div class="receipt-meta">
+                                    <p><span>No Resep:</span> <span>S-FARM/ADRISTY/2026</span></p>
+                                    <p><span>Tanggal:</span> <span>1 Juli 2026</span></p>
+                                    <p><span>Apoteker:</span> <span>Adristy N. A. Saraswati, S.Farm.</span></p>
+                                    <div class="receipt-dashed-line"></div>
+                                </div>
+
+                                <div class="receipt-rx">
+                                    <div class="rx-symbol-retro">R/</div>
+                                    
+                                    <div class="rx-receipt-item">
+                                        <div class="item-line"><strong>Bahagia Selalu & Percaya Diri 1000mg</strong></div>
+                                        <div class="item-qty">No. XXX (Tiga Puluh)</div>
+                                        <div class="item-sig">S. 1 dd tab I (Diminum 1 kali sehari, rasakan bahagia seumur hidup)</div>
+                                    </div>
+
+                                    <div class="rx-receipt-item">
+                                        <div class="item-line"><strong>Istirahat Cukup & Self Care Elixir</strong></div>
+                                        <div class="item-qty">No. Fls I (Satu Botol)</div>
+                                        <div class="item-sig">S. u. c. (Diminum jika lelah, dilarang memaksakan diri bekerja!)</div>
+                                    </div>
+
+                                    <div class="rx-receipt-item">
+                                        <div class="item-line"><strong>Semangat Masa Depan & Harapan Cerah</strong></div>
+                                        <div class="item-qty">No. ∞ (Tanpa Batas)</div>
+                                        <div class="item-sig">S. p. r. n. (Gunakan sewaktu-waktu saat butuh asupan senyum!)</div>
+                                    </div>
+
+                                    <div class="receipt-dashed-line"></div>
+                                </div>
+
+                                <div class="receipt-footer">
+                                    <p><strong>Pro:</strong> Adristy Nityasa Anggun Saraswati, S.Farm.</p>
+                                    <p><strong>Dari Bestie:</strong> Mochamad Wildani Azizi, calon S.Tr.Kom 💻</p>
+                                    <p><strong>Status:</strong> Bestie Terhebat & Apoteker Terkuat di Dunia</p>
+                                    <div class="stamp-container">
+                                        <div class="stamp-retro">
+                                            <span>S.FARM APPROVED</span>
+                                            <span>BESTIE SELAMANYA</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Actions -->
+                            <div class="receipt-actions">
+                                <button id="btn-print-rx" class="retro-btn btn-primary-retro">
+                                    <span>SIMPAN SEBAGAI PNG 📸</span>
+                                </button>
+                                <button id="btn-restart" class="retro-btn btn-secondary-retro">
+                                    <span>MULAI ULANG 🔄</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,1559 @@
+/* ==========================================================================
+   RETRO SCRAPBOOK DESIGN SYSTEM & RESET
+   ========================================================================== */
+:root {
+    --bg-cream: #faf7f0;
+    --border-dark: #1d1d1d;
+    --shadow-dark: #1d1d1d;
+    
+    /* Neon Scrapbook Colors */
+    --neon-pink: #ffb5c5;
+    --neon-blue: #a0c4ff;
+    --neon-yellow: #ffebb3;
+    --neon-green: #c7f9cc;
+    --neon-cyan: #72efdd;
+    --neon-purple: #e8dbfc;
+    
+    /* Main Accent Colors */
+    --accent-red: #ff3366;
+    --accent-blue: #3a86c8;
+    
+    --font-heading: 'Fredoka', cursive, sans-serif;
+    --font-body: 'Plus Jakarta Sans', sans-serif;
+    --font-mono: 'Space Mono', monospace;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-body);
+    background-color: var(--bg-cream);
+    /* Notebook Grid Texture */
+    background-image: 
+        linear-gradient(rgba(29, 29, 29, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(29, 29, 29, 0.05) 1px, transparent 1px);
+    background-size: 25px 25px;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--border-dark);
+    overflow-x: hidden;
+    position: relative;
+    padding: 20px 10px;
+}
+
+/* Custom Scrollbar for Retro feeling */
+::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+}
+::-webkit-scrollbar-track {
+    background: var(--bg-cream);
+    border-left: 3px solid var(--border-dark);
+}
+::-webkit-scrollbar-thumb {
+    background: var(--neon-pink);
+    border: 3px solid var(--border-dark);
+}
+::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-red);
+}
+
+/* ==========================================================================
+   STICKERS / DECORATIONS IN BACKGROUND
+   ========================================================================== */
+.scrapbook-stickers-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+}
+
+.sticker {
+    position: absolute;
+    font-family: var(--font-heading);
+    font-weight: 700;
+    border: 2px solid var(--border-dark);
+    padding: 5px 12px;
+    border-radius: 5px;
+    transform: rotate(5deg);
+    opacity: 0.85;
+    box-shadow: 2px 2px 0 var(--border-dark);
+    pointer-events: none;
+}
+
+.sticker.star-sticker {
+    background: var(--neon-yellow);
+    border-radius: 50%;
+    padding: 10px;
+    font-size: 1.2rem;
+}
+
+.sticker.pill-sticker {
+    background: var(--neon-cyan);
+    border-radius: 20px;
+    font-size: 0.85rem;
+}
+
+.sticker.heart-sticker {
+    background: var(--neon-pink);
+    font-size: 1.1rem;
+}
+
+.sticker.grad-sticker {
+    background: var(--neon-purple);
+    font-size: 0.9rem;
+}
+
+/* ==========================================================================
+   STICKY NOTE SOUND CONTROLLER
+   ========================================================================== */
+.sound-control-note {
+    position: fixed;
+    top: 25px;
+    right: 25px;
+    z-index: 100;
+    transform: rotate(3deg);
+}
+
+.sound-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px;
+    border: 3px solid var(--border-dark);
+    background: var(--neon-yellow);
+    cursor: pointer;
+    font-family: var(--font-heading);
+    font-size: 0.95rem;
+    color: var(--border-dark);
+    box-shadow: 4px 4px 0 var(--border-dark);
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+    border-radius: 4px;
+}
+
+.sound-btn:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 var(--border-dark);
+}
+
+.sound-btn:active {
+    transform: translate(2px, 2px);
+    box-shadow: 0px 0px 0 var(--border-dark);
+}
+
+.sound-btn.playing {
+    background: var(--neon-green);
+}
+
+/* Tape on sound control */
+.tape-tape {
+    position: absolute;
+    top: -15px;
+    left: 20%;
+    width: 60%;
+    height: 20px;
+    background: rgba(255, 235, 150, 0.6);
+    border-left: 2px dashed rgba(0,0,0,0.1);
+    border-right: 2px dashed rgba(0,0,0,0.1);
+    transform: rotate(-5deg);
+    z-index: 101;
+    pointer-events: none;
+}
+
+/* ==========================================================================
+   APP CONTAINER & GENERIC RETRO WINDOWS
+   ========================================================================== */
+.app-container {
+    width: 100%;
+    max-width: 900px;
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.screen {
+    display: none;
+    width: 100%;
+}
+
+.screen.active {
+    display: block;
+}
+
+/* Retro Window (Neo-brutalism desktop box) */
+.retro-window {
+    background: #fdfdfd;
+    border: 3px solid var(--border-dark);
+    box-shadow: 8px 8px 0px var(--border-dark);
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+}
+
+.window-titlebar {
+    background: var(--border-dark);
+    color: white;
+    padding: 8px 12px;
+    font-family: var(--font-mono);
+    font-weight: bold;
+    font-size: 0.9rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.window-controls {
+    display: flex;
+    gap: 6px;
+}
+
+.ctrl-btn {
+    width: 12px;
+    height: 12px;
+    border: 2px solid white;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.ctrl-btn.minimize { border-bottom: 4px solid white; border-top: none; border-left: none; border-right: none; }
+.ctrl-btn.maximize { background: transparent; }
+.ctrl-btn.close-x {
+    border: none;
+    color: white;
+    font-size: 1.1rem;
+    line-height: 12px;
+    font-family: Arial, sans-serif;
+}
+
+.window-body {
+    padding: 30px;
+}
+
+/* Typewriter/Terminal aesthetics */
+.typewriter-text {
+    font-family: var(--font-mono);
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: #444;
+}
+
+/* ==========================================================================
+   SCREEN 1: WELCOME SCREEN (BEIGE COMPUTER TERMINAL)
+   ========================================================================== */
+.welcome-window {
+    max-width: 550px;
+    margin: 0 auto;
+}
+
+.terminal-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 8px;
+}
+
+.scrapbook-title {
+    font-family: var(--font-heading);
+    font-size: 2.5rem;
+    color: var(--border-dark);
+    text-transform: uppercase;
+}
+
+.star-badge {
+    font-size: 1.8rem;
+    color: var(--accent-red);
+}
+
+.terminal-subtitle {
+    text-align: center;
+    font-weight: 700;
+    margin-bottom: 25px;
+    font-size: 0.9rem;
+    color: #666;
+    letter-spacing: 0.5px;
+}
+
+/* Monitor Screen Graphic simulation */
+.monitor-screen {
+    background: #111;
+    border: 3px solid var(--border-dark);
+    border-radius: 4px;
+    padding: 20px;
+    box-shadow: inset 0 0 15px rgba(0,255,0,0.05);
+    margin-bottom: 25px;
+    position: relative;
+    overflow: hidden;
+}
+
+.screen-glow {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 255, 0, 0.06));
+    background-size: 100% 4px, 6px 100%;
+    pointer-events: none;
+}
+
+.terminal-text {
+    color: var(--neon-pink);
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    margin-bottom: 12px;
+}
+
+.terminal-text .prompt {
+    color: var(--neon-cyan);
+    font-weight: bold;
+}
+
+.retro-input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid var(--neon-pink);
+    color: white;
+    font-family: var(--font-mono);
+    font-size: 1.1rem;
+    padding: 8px 5px;
+    outline: none;
+    text-align: center;
+    transition: border-bottom-color 0.2s ease;
+}
+
+.retro-input:focus {
+    border-bottom-color: var(--neon-cyan);
+}
+
+.error-msg {
+    color: #ff3b30;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    margin-top: 10px;
+    text-align: center;
+    display: none;
+}
+
+/* Retro Buttons */
+.retro-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 14px 24px;
+    font-family: var(--font-heading);
+    font-size: 1.1rem;
+    font-weight: 700;
+    border: 3px solid var(--border-dark);
+    border-radius: 4px;
+    cursor: pointer;
+    box-shadow: 4px 4px 0 var(--border-dark);
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+.btn-primary-retro {
+    background: var(--neon-pink);
+    color: var(--border-dark);
+}
+
+.btn-primary-retro:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 var(--border-dark);
+}
+
+.btn-primary-retro:active {
+    transform: translate(2px, 2px);
+    box-shadow: 0px 0px 0 var(--border-dark);
+}
+
+.btn-secondary-retro {
+    background: var(--neon-blue);
+    color: var(--border-dark);
+}
+
+.btn-secondary-retro:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 var(--border-dark);
+}
+
+.btn-secondary-retro:active {
+    transform: translate(2px, 2px);
+    box-shadow: 0px 0px 0 var(--border-dark);
+}
+
+.btn-secondary-retro.disabled {
+    background: #e0e0e0 !important;
+    cursor: not-allowed;
+    transform: none !important;
+    box-shadow: 0px 0px 0 var(--border-dark) !important;
+}
+
+/* ==========================================================================
+   SCREEN 2: DISPENSING / LOADING DISKETTE
+   ========================================================================== */
+.loading-window {
+    max-width: 480px;
+    margin: 0 auto;
+}
+
+.loading-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 40px;
+}
+
+.floppy-disk {
+    width: 110px;
+    height: 110px;
+    background: #2b2b2b;
+    border: 3px solid var(--border-dark);
+    border-radius: 6px;
+    position: relative;
+    margin-bottom: 25px;
+    animation: bounceFloppy 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes bounceFloppy {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-10px); }
+}
+
+.disk-metal {
+    width: 45px;
+    height: 35px;
+    background: #adb5bd;
+    border: 2px solid var(--border-dark);
+    border-top: none;
+    position: absolute;
+    top: 0;
+    left: 20px;
+    border-radius: 0 0 3px 3px;
+}
+
+.disk-label {
+    width: 80px;
+    height: 50px;
+    background: #f8f9fa;
+    border: 2px solid var(--border-dark);
+    border-bottom: none;
+    position: absolute;
+    bottom: 0;
+    left: 12px;
+    border-radius: 3px 3px 0 0;
+    padding: 5px;
+    display: flex;
+    flex-direction: column;
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    color: var(--border-dark);
+    text-align: left;
+    line-height: 1.1;
+}
+
+.label-brand {
+    font-weight: 700;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 3px;
+}
+
+.label-title {
+    font-weight: bold;
+    color: var(--accent-red);
+}
+
+.disk-write-protect {
+    width: 8px;
+    height: 8px;
+    background: transparent;
+    border: 2px solid var(--border-dark);
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    border-radius: 1px;
+}
+
+.loading-heading {
+    font-family: var(--font-heading);
+    font-size: 1.4rem;
+    color: var(--border-dark);
+    margin-bottom: 15px;
+}
+
+.progress-bar-retro {
+    width: 100%;
+    height: 24px;
+    background: white;
+    border: 3px solid var(--border-dark);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 15px;
+}
+
+.progress-bar-fill {
+    width: 0%;
+    height: 100%;
+    background: var(--neon-pink);
+    border-right: 3px solid var(--border-dark);
+    transition: width 0.1s ease;
+}
+
+.loading-subtext {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: #666;
+}
+
+/* ==========================================================================
+   SCREEN 3: MAIN SCRAPBOOK BOARD & HUB
+   ========================================================================== */
+.scrapbook-board {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 30px;
+    position: relative;
+    z-index: 5;
+}
+
+/* Pinned Polaroid Profile Photo */
+.polaroid-profile {
+    justify-self: center;
+    transform: rotate(-1.5deg);
+    margin-bottom: 10px;
+}
+
+.polaroid-photo-frame {
+    background: white;
+    border: 3px solid var(--border-dark);
+    box-shadow: 6px 6px 0px var(--border-dark);
+    padding: 15px 15px 25px;
+    width: 250px;
+    position: relative;
+}
+
+.photo-container {
+    width: 100%;
+    height: 220px;
+    background: #e9ecef;
+    border: 3px solid var(--border-dark);
+    overflow: hidden;
+    position: relative;
+}
+
+.profile-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.polaroid-caption {
+    margin-top: 15px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.handwritten-title {
+    font-family: var(--font-heading);
+    font-size: 1.15rem;
+    color: var(--border-dark);
+    font-weight: 600;
+}
+
+.caption-date {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: #666;
+}
+
+/* Top center tape strip */
+.top-center-tape {
+    position: absolute;
+    top: -22px;
+    left: 25%;
+    width: 50%;
+    height: 25px;
+    background: rgba(160, 196, 255, 0.7);
+    border-left: 2px dashed rgba(0,0,0,0.1);
+    border-right: 2px dashed rgba(0,0,0,0.1);
+    transform: rotate(2deg);
+    z-index: 10;
+}
+
+/* Decorative stars */
+.decoration-star {
+    position: absolute;
+    bottom: -15px;
+    right: -15px;
+    background: var(--neon-yellow);
+    border: 2px solid var(--border-dark);
+    border-radius: 50%;
+    padding: 8px;
+    font-size: 1.2rem;
+    box-shadow: 2px 2px 0 var(--border-dark);
+    animation: spinStar 10s linear infinite;
+}
+
+@keyframes spinStar {
+    0% { transform: rotate(0); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Scrapbook Info Memo Card */
+.info-tag-note {
+    background: var(--neon-green);
+    border: 3px solid var(--border-dark);
+    box-shadow: 5px 5px 0px var(--border-dark);
+    padding: 15px 20px;
+    border-radius: 4px;
+    max-width: 320px;
+    justify-self: center;
+    transform: rotate(2deg);
+    position: relative;
+}
+
+.info-tag-note .pushpin {
+    position: absolute;
+    top: -16px;
+    left: 45%;
+    font-size: 1.4rem;
+}
+
+.tag-bold {
+    font-family: var(--font-heading);
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin-bottom: 5px;
+    text-align: center;
+}
+
+.tag-desc {
+    font-size: 0.85rem;
+    line-height: 1.4;
+    text-align: center;
+}
+
+/* ==========================================================================
+   INTERACTIVE TAB NAVIGATION (HIGHLIGHTER / LABEL TAPES)
+   ========================================================================== */
+.scrapbook-navigation {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 10px;
+}
+
+.nav-tape {
+    border: 3px solid var(--border-dark);
+    padding: 10px 18px;
+    cursor: pointer;
+    font-family: var(--font-heading);
+    font-size: 1rem;
+    color: var(--border-dark);
+    box-shadow: 4px 4px 0 var(--border-dark);
+    transition: all 0.15s ease;
+    border-radius: 2px;
+    position: relative;
+    transform: rotate(-1deg);
+}
+
+.nav-tape:hover {
+    transform: translate(-2px, -2px) rotate(1deg);
+    box-shadow: 6px 6px 0 var(--border-dark);
+}
+
+.nav-tape.active {
+    transform: translate(2px, 2px) rotate(-2deg);
+    box-shadow: 0px 0px 0 var(--border-dark);
+    font-weight: 700;
+}
+
+/* Tape Color Variations */
+.tape-yellow { background: var(--neon-yellow); }
+.tape-blue { background: var(--neon-blue); }
+.tape-pink { background: var(--neon-pink); }
+.tape-green { background: var(--neon-green); }
+
+/* ==========================================================================
+   TAB CONTENT WINDOW SYSTEM
+   ========================================================================== */
+.scrapbook-content-window {
+    background: white;
+    border: 3px solid var(--border-dark);
+    box-shadow: 8px 8px 0px var(--border-dark);
+    border-radius: 4px;
+    padding: 35px;
+    min-height: 400px;
+    position: relative;
+}
+
+.tab-pane {
+    display: none;
+    animation: scrapIn 0.3s ease-out forwards;
+}
+
+.tab-pane.active {
+    display: block;
+}
+
+@keyframes scrapIn {
+    0% { opacity: 0; transform: translateY(10px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+.pane-header {
+    text-align: center;
+    margin-bottom: 30px;
+    border-bottom: 2px dashed var(--border-dark);
+    padding-bottom: 15px;
+}
+
+.pane-header h3 {
+    font-family: var(--font-heading);
+    font-size: 1.7rem;
+    margin-bottom: 5px;
+}
+
+/* ==========================================================================
+   TAB 1: POLAROID OBSTACLES (LULUHKAN RINTANGAN)
+   ========================================================================== */
+.polaroid-obstacles-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 25px;
+    margin-bottom: 35px;
+}
+
+.obstacle-polaroid {
+    background: white;
+    border: 2px solid var(--border-dark);
+    box-shadow: 4px 4px 0px var(--border-dark);
+    width: 140px;
+    padding: 10px 10px 18px;
+    cursor: pointer;
+    text-align: center;
+    position: relative;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Tape decoration top */
+.polaroid-tape {
+    position: absolute;
+    top: -12px;
+    left: 25%;
+    width: 50%;
+    height: 16px;
+    background: rgba(255, 181, 197, 0.6);
+    border-left: 1px dashed rgba(0,0,0,0.1);
+    border-right: 1px dashed rgba(0,0,0,0.1);
+    transform: rotate(-3deg);
+}
+
+.paperclip {
+    position: absolute;
+    top: -12px;
+    left: 10px;
+    font-size: 1.6rem;
+    z-index: 5;
+    transform: rotate(15deg);
+}
+
+.pushpin-small {
+    position: absolute;
+    top: -10px;
+    left: 45%;
+    font-size: 1.1rem;
+    z-index: 5;
+}
+
+/* Obstacle rotation variations */
+.obstacle-polaroid:nth-child(1) { transform: rotate(-3deg); }
+.obstacle-polaroid:nth-child(2) { transform: rotate(2deg); }
+.obstacle-polaroid:nth-child(3) { transform: rotate(-1.5deg); }
+.obstacle-polaroid:nth-child(4) { transform: rotate(3deg); }
+.obstacle-polaroid:nth-child(5) { transform: rotate(-2.5deg); }
+
+.obstacle-polaroid:hover {
+    transform: translateY(-8px) scale(1.05) rotate(0deg) !important;
+    box-shadow: 6px 8px 0px var(--border-dark);
+    z-index: 10;
+}
+
+.obstacle-photo {
+    width: 100%;
+    height: 100px;
+    background: #f1f3f5;
+    border: 2px solid var(--border-dark);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2.2rem;
+    transition: background 0.3s ease;
+}
+
+.obstacle-photo-caption {
+    margin-top: 10px;
+    font-family: var(--font-heading);
+    font-size: 0.8rem;
+    color: var(--border-dark);
+}
+
+/* Dissolving/Scratching Animation */
+.obstacle-polaroid.scratched {
+    pointer-events: none;
+    transform: scale(0.95);
+    opacity: 0.6;
+}
+
+.obstacle-polaroid.scratched::after {
+    content: "❌";
+    font-size: 4rem;
+    position: absolute;
+    top: 25%;
+    left: 25%;
+    z-index: 10;
+    color: var(--accent-red);
+    animation: drawScratch 0.4s ease-out forwards;
+}
+
+@keyframes drawScratch {
+    0% { transform: scale(3); opacity: 0; }
+    100% { transform: scale(1.2); opacity: 0.95; }
+}
+
+/* Affirmation Card */
+.affirmation-scrapbook-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+    min-height: 100px;
+}
+
+.affirmation-scrapbook-card {
+    background: var(--neon-yellow);
+    border: 3px solid var(--border-dark);
+    box-shadow: 5px 5px 0 var(--border-dark);
+    padding: 25px;
+    border-radius: 4px;
+    width: 100%;
+    max-width: 600px;
+    position: relative;
+    animation: popCard 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes popCard {
+    0% { transform: scale(0.9) rotate(-1deg); opacity: 0; }
+    100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+
+.affirmation-scrapbook-card.hidden {
+    display: none;
+}
+
+.affirmation-scrapbook-card .card-pin {
+    position: absolute;
+    top: -15px;
+    left: 48%;
+    font-size: 1.4rem;
+}
+
+.affirmation-scrapbook-card h4 {
+    font-family: var(--font-heading);
+    font-size: 1.3rem;
+    color: var(--border-dark);
+    margin-bottom: 10px;
+    text-align: center;
+    border-bottom: 2px solid var(--border-dark);
+    padding-bottom: 5px;
+}
+
+.affirmation-scrapbook-card p {
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+/* ==========================================================================
+   TAB 2: STICKY NOTES PINBOARD
+   ========================================================================== */
+.sticky-notes-board {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 25px;
+    margin-bottom: 30px;
+}
+
+.sticky-note {
+    background: #fdf6e2;
+    border: 2px solid var(--border-dark);
+    box-shadow: 4px 4px 0 var(--border-dark);
+    padding: 25px 20px;
+    cursor: pointer;
+    text-align: center;
+    position: relative;
+    min-height: 160px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Rotation and colors of sticky notes */
+.note-pink { background: var(--neon-pink); transform: rotate(-2deg); }
+.note-yellow { background: var(--neon-yellow); transform: rotate(1.5deg); }
+.note-blue { background: var(--neon-blue); transform: rotate(-1deg); }
+.note-green { background: var(--neon-green); transform: rotate(2deg); }
+
+.sticky-note:hover {
+    transform: translateY(-5px) scale(1.03) rotate(0deg) !important;
+    box-shadow: 6px 6px 0 var(--border-dark);
+    z-index: 5;
+}
+
+.note-pin {
+    position: absolute;
+    top: -12px;
+    left: 45%;
+    font-size: 1.3rem;
+}
+
+.note-title {
+    font-family: var(--font-heading);
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    border-bottom: 2px dashed rgba(0,0,0,0.15);
+    padding-bottom: 5px;
+}
+
+.note-desc {
+    font-size: 0.8rem;
+    line-height: 1.4;
+    color: #444;
+}
+
+/* Vintage Notepad Modal */
+.notepad-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 200;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
+
+.notepad-modal-overlay.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.notepad-modal-card {
+    background: #fffef0;
+    border: 3px solid var(--border-dark);
+    box-shadow: 10px 10px 0 var(--border-dark);
+    border-radius: 4px;
+    width: 90%;
+    max-width: 500px;
+    animation: popCard 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+.notepad-header {
+    background: #e2dfcf;
+    border-bottom: 3px solid var(--border-dark);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    height: 45px;
+}
+
+/* Retro notebook loops */
+.notepad-ring {
+    width: 18px;
+    height: 25px;
+    background: #adb5bd;
+    border: 2px solid var(--border-dark);
+    border-radius: 10px;
+    position: absolute;
+    top: -12px;
+}
+
+.notepad-ring:nth-child(1) { left: 15%; }
+.notepad-ring:nth-child(2) { left: 35%; }
+.notepad-ring:nth-child(3) { left: 55%; }
+.notepad-ring:nth-child(4) { left: 75%; }
+
+.notepad-close {
+    position: absolute;
+    right: 15px;
+    top: 5px;
+    font-size: 1.8rem;
+    border: none;
+    background: none;
+    cursor: pointer;
+    color: var(--border-dark);
+}
+
+.notepad-body {
+    padding: 30px;
+}
+
+.notepad-title {
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    text-align: center;
+    color: var(--accent-blue);
+}
+
+.notepad-lines {
+    background-image: linear-gradient(#e9ecef 1px, transparent 1px);
+    background-size: 100% 28px;
+    line-height: 28px;
+    padding: 5px 0;
+    margin-bottom: 20px;
+}
+
+.notepad-content {
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    color: #333;
+    white-space: pre-line;
+    text-align: left;
+    max-height: 250px;
+    overflow-y: auto;
+    padding: 0 10px;
+}
+
+.notepad-dosage {
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    background: var(--neon-yellow);
+    border: 2px solid var(--border-dark);
+    padding: 8px 12px;
+    border-radius: 4px;
+    text-align: center;
+    font-weight: 700;
+}
+
+/* ==========================================================================
+   TAB 3: MORTAR STRESS GRINDER (STRESS GRINDER 95)
+   ========================================================================== */
+.grinder-window-container {
+    display: flex;
+    gap: 30px;
+    align-items: flex-start;
+}
+
+@media (max-width: 768px) {
+    .grinder-window-container {
+        flex-direction: column;
+    }
+}
+
+.stress-items-sidebar {
+    flex: 1;
+    background: var(--neon-purple);
+    border: 3px solid var(--border-dark);
+    padding: 20px;
+    box-shadow: 4px 4px 0 var(--border-dark);
+    border-radius: 4px;
+}
+
+.stress-items-sidebar h4 {
+    font-family: var(--font-heading);
+    margin-bottom: 15px;
+    font-size: 1.15rem;
+}
+
+.stress-disk {
+    padding: 10px 14px;
+    background: white;
+    border: 2px solid var(--border-dark);
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    margin-bottom: 10px;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.stress-disk:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 3px 3px 0 var(--border-dark);
+}
+
+.stress-disk.added {
+    opacity: 0.5;
+    text-decoration: line-through;
+    pointer-events: none;
+    transform: scale(0.95);
+    background: #e9ecef;
+    box-shadow: none;
+}
+
+/* Grinder Arena & workspace */
+.mortar-grinder-workspace {
+    flex: 1.5;
+    width: 100%;
+}
+
+.grinder-app-window {
+    background: #dfdfdf;
+    border: 3px solid var(--border-dark);
+    box-shadow: 6px 6px 0 var(--border-dark);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.grinder-titlebar {
+    background: #000080;
+    color: white;
+    padding: 6px 12px;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+.grinder-workspace-body {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.terminal-status {
+    background: black;
+    color: #00ff00;
+    width: 100%;
+    padding: 10px;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    text-align: center;
+    border-radius: 2px;
+    margin-bottom: 20px;
+    min-height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.mortar-svg-wrapper {
+    position: relative;
+    width: 160px;
+    height: 150px;
+    margin-bottom: 20px;
+}
+
+/* Flat CSS Mortar illustration */
+.retro-mortar {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.retro-mortar-bowl {
+    width: 140px;
+    height: 90px;
+    background: #f1f3f5;
+    border: 4px solid var(--border-dark);
+    border-radius: 0 0 70px 70px;
+    position: absolute;
+    bottom: 5px;
+    left: 10px;
+    overflow: hidden;
+}
+
+.mortar-grind-dust {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 0px; /* expands dynamically */
+    background: var(--neon-pink);
+    transition: height 0.3s ease, background 0.3s ease;
+    opacity: 0.85;
+    border-top: 3px solid var(--border-dark);
+}
+
+.retro-pestle {
+    width: 25px;
+    height: 90px;
+    background: #e9ecef;
+    border: 4px solid var(--border-dark);
+    border-radius: 12px;
+    position: absolute;
+    top: 5px;
+    left: 68px;
+    transform-origin: 50% 100%;
+    transform: rotate(15deg);
+    z-index: 10;
+    transition: transform 0.15s ease;
+}
+
+.retro-pestle.grinding {
+    animation: retroGrind 0.25s infinite alternate;
+}
+
+@keyframes retroGrind {
+    0% { transform: translate(-10px, 10px) rotate(5deg); }
+    100% { transform: translate(10px, 20px) rotate(-15deg); }
+}
+
+/* Progress bar section */
+.retro-progress-section {
+    margin-top: 25px;
+}
+
+.progress-labels {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--font-heading);
+    font-size: 0.9rem;
+    margin-bottom: 6px;
+}
+
+.retro-bar-container {
+    width: 100%;
+    height: 24px;
+    background: white;
+    border: 3px solid var(--border-dark);
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.retro-bar-fill {
+    width: 0%;
+    height: 100%;
+    background: var(--neon-cyan);
+    border-right: 3px solid var(--border-dark);
+    transition: width 0.3s ease;
+}
+
+/* ==========================================================================
+   VICTORY CERTIFICATE OVERLAY
+   ========================================================================== */
+.diploma-overlay-retro {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(250, 247, 240, 0.96);
+    z-index: 300;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow-y: auto;
+    padding: 20px;
+}
+
+.diploma-overlay-retro.hidden {
+    display: none;
+}
+
+.certificate-paper {
+    background: #fffdf2;
+    border: 4px solid var(--border-dark);
+    box-shadow: 12px 12px 0 var(--border-dark);
+    max-width: 650px;
+    width: 100%;
+    padding: 10px;
+    animation: popCard 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+.cert-border {
+    border: 6px double var(--border-dark);
+    padding: 40px 30px;
+    text-align: center;
+    position: relative;
+}
+
+.cert-seal {
+    font-size: 3.5rem;
+    margin-bottom: 10px;
+}
+
+.cert-title {
+    font-family: var(--font-heading);
+    font-size: 1.6rem;
+    margin-bottom: 20px;
+    color: var(--border-dark);
+    letter-spacing: 1px;
+}
+
+.cert-subtitle {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: #666;
+    margin-bottom: 12px;
+}
+
+.cert-recipient {
+    font-family: var(--font-heading);
+    font-size: 2.1rem;
+    color: var(--accent-red);
+    margin-bottom: 25px;
+    text-decoration: underline;
+    text-underline-offset: 6px;
+    text-decoration-color: var(--neon-yellow);
+}
+
+.cert-body {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    color: #444;
+}
+
+.cert-highlight {
+    font-family: var(--font-heading);
+    font-size: 1.15rem;
+    background: var(--neon-green);
+    border: 2px dashed var(--border-dark);
+    padding: 12px;
+    border-radius: 4px;
+    margin-top: 15px;
+    color: var(--border-dark);
+}
+
+.cert-signatures {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 35px;
+    margin-bottom: 30px;
+}
+
+.cert-sign {
+    border-top: 2px dashed var(--border-dark);
+    padding-top: 8px;
+    width: 140px;
+    display: flex;
+    flex-direction: column;
+}
+
+.cert-sign .title {
+    font-size: 0.75rem;
+    font-family: var(--font-mono);
+    color: #666;
+    text-transform: uppercase;
+}
+
+.cert-sign .name {
+    font-family: var(--font-heading);
+    font-size: 0.9rem;
+    margin-top: 4px;
+}
+
+/* Pinned retro stamp */
+.cert-stamp {
+    position: absolute;
+    bottom: 60px;
+    right: 40px;
+    border: 3px dashed var(--accent-red);
+    border-radius: 4px;
+    color: var(--accent-red);
+    font-weight: 900;
+    padding: 8px 12px;
+    transform: rotate(-12deg);
+    font-family: var(--font-heading);
+    font-size: 0.95rem;
+    pointer-events: none;
+    background: rgba(255,255,255,0.9);
+}
+
+/* ==========================================================================
+   TAB 4: PRESCRIPTION RECEIPT (RESEP SPESIAL)
+   ========================================================================== */
+.receipt-layout-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 25px;
+}
+
+.vintage-receipt {
+    background: #fafaf5;
+    border: 3px solid var(--border-dark);
+    box-shadow: 6px 6px 0px var(--border-dark);
+    width: 100%;
+    max-width: 480px;
+    padding: 35px;
+    color: #111;
+    font-family: var(--font-mono);
+    position: relative;
+}
+
+.receipt-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.receipt-header h2 {
+    font-size: 1.15rem;
+    font-weight: 800;
+    margin-bottom: 4px;
+}
+
+.receipt-header p {
+    font-size: 0.75rem;
+    color: #555;
+}
+
+.receipt-contact {
+    font-size: 0.7rem;
+}
+
+.receipt-dashed-line {
+    border-top: 2px dashed var(--border-dark);
+    margin: 12px 0;
+    width: 100%;
+}
+
+.receipt-meta {
+    font-size: 0.8rem;
+    line-height: 1.5;
+}
+
+.receipt-meta p {
+    display: flex;
+    justify-content: space-between;
+}
+
+.rx-symbol-retro {
+    font-size: 2.2rem;
+    font-weight: 900;
+    margin-bottom: 10px;
+}
+
+.rx-receipt-item {
+    margin-bottom: 20px;
+    padding-left: 15px;
+}
+
+.item-line {
+    font-size: 0.9rem;
+    margin-bottom: 2px;
+}
+
+.item-qty {
+    font-size: 0.8rem;
+    color: #444;
+    font-style: italic;
+    margin-bottom: 2px;
+}
+
+.item-sig {
+    font-size: 0.8rem;
+    color: #666;
+    padding-left: 8px;
+    border-left: 2px solid var(--border-dark);
+}
+
+.receipt-dashed-line {
+    border-top: 2px dashed var(--border-dark);
+    margin: 12px 0;
+    width: 100%;
+}
+
+.receipt-footer {
+    font-size: 0.85rem;
+    line-height: 1.5;
+    position: relative;
+}
+
+.receipt-footer p {
+    margin-bottom: 4px;
+}
+
+.stamp-retro {
+    border: 3px double var(--neon-pink);
+    border-radius: 4px;
+    color: var(--accent-red);
+    font-weight: bold;
+    padding: 8px 12px;
+    font-size: 0.9rem;
+    text-align: center;
+    line-height: 1.1;
+    font-family: var(--font-heading);
+    display: flex;
+    flex-direction: column;
+    background: rgba(255,255,255,0.9);
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    transform: rotate(-10deg);
+    pointer-events: none;
+}
+
+.stamp-retro span:first-child {
+    font-size: 1.05rem;
+    letter-spacing: 0.5px;
+}
+
+.stamp-retro span:last-child {
+    font-size: 0.7rem;
+}
+
+.receipt-actions {
+    display: flex;
+    gap: 15px;
+    width: 100%;
+    max-width: 480px;
+}
+
+.receipt-actions .retro-btn {
+    flex: 1;
+}
+
+/* ==========================================================================
+   PRINT STYLING
+   ========================================================================== */
+@media print {
+    body * {
+        visibility: hidden;
+        background: transparent !important;
+        box-shadow: none !important;
+    }
+    #prescription-print, #prescription-print * {
+        visibility: visible;
+    }
+    #prescription-print {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        border: none;
+        box-shadow: none;
+    }
+    .stamp-retro {
+        display: flex !important;
+    }
+}
