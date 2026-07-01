@@ -486,7 +486,6 @@ document.addEventListener('DOMContentLoaded', () => {
             createFlatSparks(x, y);
 
             // Display memo
-            const obs = pol.getAttribute('data-obstacle');
             const data = obstacleMemos[obs];
             if (data) {
                 affTitle.textContent = data.title;
